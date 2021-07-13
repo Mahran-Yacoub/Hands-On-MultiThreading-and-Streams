@@ -1,6 +1,7 @@
 package com.example.SpringBootrRestAPI.models;
 
-
+;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,16 +15,6 @@ public class Customer {
     private Integer id ;
     private String firstName ;
     private String lastName ;
-
-    public Customer() {
-
-    }
-
-    public Customer(int id, String firstName, String lastName) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
 
     public Integer getId() {
         return id;

@@ -1,7 +1,7 @@
 package com.example.SpringBootrRestAPI.controllers;
 
 import com.example.SpringBootrRestAPI.models.Customer;
-import com.example.SpringBootrRestAPI.repo.Repository;
+import com.example.SpringBootrRestAPI.repo.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
@@ -16,10 +16,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/customer")
-public class Controller {
+public class CustomerController {
 
     @Autowired
-    Repository repositoryDB;
+    CustomerRepository repositoryDB;
 
     /**
      * This Method will receive GET Request as

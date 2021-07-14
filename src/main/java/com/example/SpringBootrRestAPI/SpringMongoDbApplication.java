@@ -1,5 +1,6 @@
 package com.example.SpringBootrRestAPI;
 
+import com.example.SpringBootrRestAPI.models.Active;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,5 +10,7 @@ public class SpringMongoDbApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(SpringMongoDbApplication.class, args);
+		Active i = Active.ON ;
+
 	}
 }

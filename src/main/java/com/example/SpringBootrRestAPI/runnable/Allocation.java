@@ -23,28 +23,5 @@ public class Allocation implements Runnable {
         this.id = id;
     }
 
-    public Services getServices() {
-        return services;
-    }
-
-    public void setServices(Services services) {
-        this.services = services;
-    }
-
-    public int getSpace() {
-        return space;
-    }
-
-    public void setSpace(int space) {
-        this.space = space;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
 }

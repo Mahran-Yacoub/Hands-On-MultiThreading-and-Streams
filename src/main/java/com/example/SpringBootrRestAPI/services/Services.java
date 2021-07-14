@@ -6,91 +6,119 @@ import com.example.SpringBootrRestAPI.models.Server;
 import com.example.SpringBootrRestAPI.repo.ServerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.Optional;
 
+/**
+ * This is A class that contains methods that we need to rent a space in
+ * a server.
+ */
 @Service
 public class Services {
 
-    private final int CAPACITY = 100 ;
+    /**
+     * Maximum Capacity of a server
+     */
+    private final int CAPACITY = 100;
 
     @Autowired
     private ServerRepository serverRepositoryDB;
 
-    private FriendlyId friendlyId;
-
-    public Services(ServerRepository serverRepositoryDB, FriendlyId friendlyId) {
-        this.serverRepositoryDB = serverRepositoryDB;
-        this.friendlyId = friendlyId;
-    }
-
-    public Services(){
-
-    }
+    /**
+     * This method will read servers that exist in servers pool and
+     * rent a given space in a server if there exist space in one of them ,
+     * otherwise it will span new server in servers pool and rent a given space in it.
+     *
+     * @param space Space we want to rent in range from 1 to 100 Inclusive.
+     *
+     * @param id ID of Customer who wants to rent The space.
+     *
+     */
     public synchronized void allocate(int space, String id) {
 
         Optional<Server> selectServer = serverRepositoryDB.findAll().stream()
                 .filter(server -> server.getServerCapacity() >= space
                         && server.getIsActive() == Active.ON).findFirst();
 
+        if (selectServer.isPresent()) {
 
-        if(selectServer.isPresent()){
+            updateServer(selectServer, space, id);
 
-            updateServer(selectServer,space,id);
-
-        }else{
-
-            spanAndAllocateServer(space, id) ;
-
+        } else {
+            spanNewServer(space, id);
         }
     }
 
-    private void spanAndAllocateServer(int space, String id) {
+    /**
+     * This Method will Create New Server in Servers Pool and
+     * rent A given Space in it and save a customer ID that wants to rent a space
+     * in it.
+     *
+     * @param space space that want to rent in new Server.
+     *
+     * @param customerId Customer ID who wants to rent the space.
+     *
+     */
+    private void spanNewServer(int space, String customerId) {
+
+        Server newServer = spanServer();
+        serverRepositoryDB.save(newServer);
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(20000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        Server newServer = spanServer();
-        int newCapacity = newServer.getServerCapacity() - space ;
+        newServer.setIsActive(Active.ON);
+        int newCapacity = newServer.getServerCapacity() - space;
         newServer.setServerCapacity(newCapacity);
-        newServer.getCustomers().put(id,space);
-
-        serverRepositoryDB.save(newServer) ;
-
+        newServer.getCustomers().put(customerId, space);
+        serverRepositoryDB.save(newServer);
     }
 
+    /**
+     * This is A Helping Method For A SpanNewServer
+     * to create new server with maximum capacity and OFF Status
+     * and Hash Table to save customers that will rent in a server.
+     *
+     * @return New Server With maximum capacity and InActive.
+     */
     private Server spanServer() {
 
-        String newID = friendlyId.createFriendlyId();
-        Server newServer = new Server(newID,CAPACITY,Active.ON,new HashMap<String,Integer>());
-
-        return newServer ;
+        String newID = FriendlyId.createFriendlyId();
+        Server newServer = new Server(newID, CAPACITY, Active.OFF, new HashMap<String, Integer>());
+        return newServer;
     }
 
-    private void updateServer(Optional<Server> selectServer, int space, String id) {
+    /**
+     * This method will used to update and rent space in exist server in servers pool
+     *
+     * @param selectServer The server we will rent a given space in it.
+     *
+     * @param space The space that we want to rent.
+     *
+     * @param id Customer ID who wants to rent The space.
+     */
+    private synchronized void updateServer(Optional<Server> selectServer, int space, String id) {
 
         Server server = selectServer.get();
-        int newCapacity = server.getServerCapacity() - space ;
+        int newCapacity = server.getServerCapacity() - space;
         server.setServerCapacity(newCapacity);
 
-        if(server.getCustomers().containsKey(id)){
+        if (server.getCustomers().containsKey(id)) {
 
             int existSpace = server.getCustomers().get(id);
-            int newSpace = existSpace + space ;
-            server.getCustomers().put(id,newSpace);
+            int newSpace = existSpace + space;
+            server.getCustomers().put(id, newSpace);
 
-        }else{
+        } else {
 
-            server.getCustomers().put(id,space);
+            server.getCustomers().put(id, space);
         }
 
         serverRepositoryDB.save(server);
     }
-
 }
 
 

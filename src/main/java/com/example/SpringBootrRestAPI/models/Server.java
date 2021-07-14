@@ -1,11 +1,13 @@
 package com.example.SpringBootrRestAPI.models;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
 
+/**
+ * This Class will be a Document that store in DataBase Automatically
+ */
 @Document
 public class Server implements Comparable<Server> {
 

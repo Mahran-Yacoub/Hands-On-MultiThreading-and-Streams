@@ -6,6 +6,7 @@ import com.example.SpringBootrRestAPI.models.Server;
 import com.example.SpringBootrRestAPI.repo.ServerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -30,9 +31,7 @@ public class Services {
      * otherwise it will span new server in servers pool and rent a given space in it.
      *
      * @param space Space we want to rent in range from 1 to 100 Inclusive.
-     *
-     * @param id ID of Customer who wants to rent The space.
-     *
+     * @param id    ID of Customer who wants to rent The space.
      */
     public synchronized void allocate(int space, String id) {
 
@@ -45,6 +44,7 @@ public class Services {
             updateServer(selectServer, space, id);
 
         } else {
+
             spanNewServer(space, id);
         }
     }
@@ -54,10 +54,8 @@ public class Services {
      * rent A given Space in it and save a customer ID that wants to rent a space
      * in it.
      *
-     * @param space space that want to rent in new Server.
-     *
+     * @param space      space that want to rent in new Server.
      * @param customerId Customer ID who wants to rent the space.
-     *
      */
     private void spanNewServer(int space, String customerId) {
 
@@ -95,10 +93,8 @@ public class Services {
      * This method will used to update and rent space in exist server in servers pool
      *
      * @param selectServer The server we will rent a given space in it.
-     *
-     * @param space The space that we want to rent.
-     *
-     * @param id Customer ID who wants to rent The space.
+     * @param space        The space that we want to rent.
+     * @param id           Customer ID who wants to rent The space.
      */
     private synchronized void updateServer(Optional<Server> selectServer, int space, String id) {
 

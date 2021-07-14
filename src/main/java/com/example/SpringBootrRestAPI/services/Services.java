@@ -96,7 +96,7 @@ public class Services {
      * @param space        The space that we want to rent.
      * @param id           Customer ID who wants to rent The space.
      */
-    private synchronized void updateServer(Optional<Server> selectServer, int space, String id) {
+    private void updateServer(Optional<Server> selectServer, int space, String id) {
 
         Server server = selectServer.get();
         int newCapacity = server.getServerCapacity() - space;

@@ -1,9 +1,11 @@
 package com.example.SpringBootrRestAPI.runnable;
 
-
 import com.example.SpringBootrRestAPI.services.Services;
 
-
+/**
+ * This is a class contains the run method for each thread
+ * that will be started
+ */
 public class Allocation implements Runnable {
 
     private final Services services;

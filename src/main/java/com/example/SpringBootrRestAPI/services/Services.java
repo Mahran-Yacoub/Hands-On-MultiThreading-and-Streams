@@ -6,7 +6,6 @@ import com.example.SpringBootrRestAPI.models.Server;
 import com.example.SpringBootrRestAPI.repo.ServerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -33,11 +32,11 @@ public class Services {
      * @param space Space we want to rent in range from 1 to 100 Inclusive.
      * @param id    ID of Customer who wants to rent The space.
      */
+
     public synchronized void allocate(int space, String id) {
 
         Optional<Server> selectServer = serverRepositoryDB.findAll().stream()
-                .filter(server -> server.getServerCapacity() >= space
-                        && server.getIsActive() == Active.ON).findFirst();
+                .filter(server -> server.getServerCapacity() >= space).findFirst();
 
         if (selectServer.isPresent()) {
 
@@ -94,23 +93,29 @@ public class Services {
      *
      * @param selectServer The server we will rent a given space in it.
      * @param space        The space that we want to rent.
-     * @param id           Customer ID who wants to rent The space.
+     * @param customerID           Customer ID who wants to rent The space.
      */
-    private  void updateServer(Optional<Server> selectServer, int space, String id) {
+    private void updateServer(Optional<Server> selectServer, int space, String customerID) {
 
         Server server = selectServer.get();
+
+        while(serverRepositoryDB.findById(server.getServerID()).get().getIsActive() != Active.ON){
+
+            //wait a server to be ON
+        }
+
         int newCapacity = server.getServerCapacity() - space;
         server.setServerCapacity(newCapacity);
 
-        if (server.getCustomers().containsKey(id)) {
+        if (server.getCustomers().containsKey(customerID)) {
 
-            int existSpace = server.getCustomers().get(id);
+            int existSpace = server.getCustomers().get(customerID);
             int newSpace = existSpace + space;
-            server.getCustomers().put(id, newSpace);
+            server.getCustomers().put(customerID, newSpace);
 
         } else {
 
-            server.getCustomers().put(id, space);
+            server.getCustomers().put(customerID, space);
         }
 
         serverRepositoryDB.save(server);

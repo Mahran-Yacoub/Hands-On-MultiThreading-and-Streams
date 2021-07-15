@@ -1,5 +1,9 @@
 package com.example.SpringBootrRestAPI.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,21 +13,21 @@ import java.util.HashMap;
  * This Class will be a Document that store in DataBase Automatically
  */
 @Document
+@AllArgsConstructor
+@NoArgsConstructor
 public class Server implements Comparable<Server> {
 
-    @Id
+    @Id @Setter @Getter
     private String serverID ;
+
+    @Setter @Getter
     private int serverCapacity ;
+
+    @Setter @Getter
     private Active isActive ;
+
+    @Setter @Getter
     private HashMap<String,Integer> customers  = new HashMap<>();
-
-
-    public Server(String serverID, int serverCapacity, Active isActive, HashMap<String, Integer> customers) {
-        this.serverID = serverID;
-        this.serverCapacity = serverCapacity;
-        this.isActive = isActive;
-        this.customers = customers;
-    }
 
     @Override
     public String toString() {
@@ -33,38 +37,6 @@ public class Server implements Comparable<Server> {
                 ", isActive=" + isActive +
                 ", customers=" + customers +
                 '}';
-    }
-
-    public String getServerID() {
-        return serverID;
-    }
-
-    public void setServerID(String serverID) {
-        this.serverID = serverID;
-    }
-
-    public int getServerCapacity() {
-        return serverCapacity;
-    }
-
-    public void setServerCapacity(int serverCapacity) {
-        this.serverCapacity = serverCapacity;
-    }
-
-    public Active getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Active isActive) {
-        this.isActive = isActive;
-    }
-
-    public HashMap<String, Integer> getCustomers() {
-        return customers;
-    }
-
-    public void setCustomers(HashMap<String, Integer> customers) {
-        this.customers = customers;
     }
 
     @Override

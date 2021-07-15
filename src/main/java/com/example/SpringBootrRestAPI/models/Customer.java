@@ -1,5 +1,9 @@
 package com.example.SpringBootrRestAPI.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,34 +11,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * This Class will be a Document that store in DataBase Automatically
  */
 @Document
+@AllArgsConstructor
+@NoArgsConstructor
 public class Customer {
 
-    @Id
+    @Id @Setter @Getter
     private Integer id ;
+
+    @Setter @Getter
     private String firstName ;
+
+    @Setter @Getter
     private String lastName ;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 }
